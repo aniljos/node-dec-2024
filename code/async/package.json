@@ -1,0 +1,12 @@
+{
+  "name": "my-async-app",
+  "version": "1.0.0",
+  "description": "sample demo for node async programming",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "npm test"
+  },
+  "author": "Anil Joseph",
+  "license": "MIT"
+}
