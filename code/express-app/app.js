@@ -1,7 +1,11 @@
 import express from 'express';
 import chalk from 'chalk';
+import { ProductRepository } from './repository/product-repository.js';
 
 const app = express();
+
+//enable the template-engine=> ejs
+app.set("view engine", "ejs");
 
 //middleware(logging the requests)
 app.use((req, res, next) => {
@@ -27,8 +31,14 @@ app.get("/about", (req, res) => {
 })
 app.get("/products", (req, resp) => {
 
-    
+    const repository = new ProductRepository();
+    const allProducts = repository.fetchAll();
 
+    //render the products.ejs in the views folder
+    resp.render("products", {
+        title: "List of Products",
+        products: allProducts
+    });
 })
 
 const PORT = 9000;

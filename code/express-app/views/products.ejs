@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Products</title>
+</head>
+<body>
+    <h3>Products</h3>
+    <p><%= title %></p>
+    <p>Generated at <%= new Date().toLocaleString() %></p>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Product ID</th>
+                <th>Name</th>
+                <th>Price</th>
+                <th>Description</th>
+                <th>Created Date</th>
+            </tr>
+        </thead>
+        <tbody>
+
+            <% let x = 0%>
+            Value of x : <%=x%>
+            <% products.forEach(product => { %>
+                <tr>
+                    <td><%=product.id%></td>
+                    <td><%=product.name%></td>
+                    <td><%=product.price%></td>
+                    <td><%=product.description%></td>
+                    <td><%=product.createDate.toLocaleDateString()%></td>
+                </tr>
+            <%})%>
+        </tbody>
+    </table>
+</body>
+</html>

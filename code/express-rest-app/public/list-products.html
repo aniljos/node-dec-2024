@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Products</title>
+</head>
+
+<body>
+    <h3>List Products</h3>
+    <p>This is a static html page that invokes the REST endpoint to fetch the products</p>
+
+    <div>
+        <button onclick="loadProducts()">Fetch Products</button>
+    </div>
+
+    <div id="productsPanel">
+
+    </div>
+
+    <script>
+
+        async function loadProducts() {
+            //use the fetch api to send a request to the server
+
+            try {
+                const url = "http://localhost:9010/products";
+                const response = await fetch(url);
+                const products = await response.json();
+                console.log("products", products);
+
+                const productsPanel = document.getElementById("productsPanel");
+                products.forEach(product => {
+                    const divElement = document.createElement("div");
+                    divElement.innerHTML = `
+                        <p>Id: ${product.id}</p>
+                        <p>Name: ${product.name}</p>
+                        <p>Price: ${product.price}</p>
+                    `
+                    productsPanel.append(divElement);
+                })
+                
+            }
+            catch (e) {
+                console.log("Error fetching data", e);
+            }
+
+        }
+
+    </script>
+</body>
+
+</html>
