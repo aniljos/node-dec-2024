@@ -1,6 +1,16 @@
 const fs = require('fs');
 console.log("Streams application");
 
+const streams = require("node:stream")
+const pipeline = streams.pipeline;
+const Transform = streams.Transform;
+//import {pipeline, Transform} from 'node:stream'; // esm
+const zlib = require('node:zlib');
+const gzip = zlib.createGzip();
+//import {gzip} from 'node:zlib'
+
+
+
 
 
 // process.stdin.on("data", (input) => {
@@ -46,10 +56,42 @@ function readFileinPausedMode(){
             console.log(chunck);
             chunck = stream.read();
         }
-
     })
-    
-
 }
+
+function pipeStdProcessStreams(){
+    process.stdin.pipe(process.stdout);
+}
+function copyFile(source, destination){
+    fs.createReadStream(source).pipe(fs.createWriteStream(destination));
+}
+
+const uppercaseTransform = new Transform({
+    transform: (chunk, encoding, callback ) => {
+
+         callback(null, chunk.toString().toUpperCase());
+    }
+})
+
+function copyFileToUppercaseAndCompresses(source, destination){
+    pipeline(
+        fs.createReadStream(source),
+        uppercaseTransform,
+        gzip,
+        fs.createWriteStream(destination),
+        (err) => {
+            if (err) {
+              console.error('Pipeline failed.', err);
+            } else {
+              console.log('Pipeline succeeded.');
+            }
+          },
+    )
+}
+
 //readFileInFlowMode();
-readFileinPausedMode();
+//readFileinPausedMode();
+//pipeStdProcessStreams();
+
+//copyFile("data.txt", "data-copy.txt")
+copyFileToUppercaseAndCompresses("data.txt", "data-copy-1.gz");
