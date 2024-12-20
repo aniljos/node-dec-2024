@@ -9,10 +9,32 @@ const httpServer = createServer(expressApp);
 
 const socketio = new Server(httpServer);
 
+expressApp.use(express.static("public"));
+
+//client sockets
+const clientSockets = [];
+
 //This event listens for a clinet connection
 socketio.on("connection", (socket) => {
 
-    console.log(chalk.yellowBright("A new socket.io client connected to the server..."));
+    let clientName;
+    socket.on("register", (name) => {
+        clientName = name;
+        clientSockets.push(socket);
+        console.log(chalk.yellowBright(`A new socket.io client ${name} connected to the server...`));
+        socket.send(`Welcome ${name} to the socket-io server`);
+    })
+
+    socket.on("message", (message) => {
+        
+        const detailedMessage = `${clientName}: ${message}`;
+        
+        console.log(detailedMessage);
+
+        clientSockets.forEach(socket => {
+            socket.emit("broadcast", detailedMessage);
+        })
+    })
 
 })
 
