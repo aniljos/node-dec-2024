@@ -1,5 +1,7 @@
 import {Router} from 'express'
 import { registerUser, validateUser } from '../repository/mongodb-connect.js';
+import jwt from 'jsonwebtoken';
+
 
 export const authRouter = Router();
 
@@ -33,7 +35,21 @@ authRouter.post("/validateUser", async (req, resp) => {
             const result = await validateUser(user.loginId, user.password);
             console.log("result", result)
             if(result !== null){
-                resp.status(200).send(result);
+
+                //Generate a JWT 
+                jwt.sign({name: result.name, role: result.role}, "tHisIsasEcretkEy", {expiresIn: '5m' }, (err, token) => {
+
+                    if(err){
+                        resp.status(500).send("Failed to create a token");
+                    }
+                    else{
+                        resp.status(200).send({
+                            token
+                        });
+                    }
+
+                })
+                
             }
             else{
                 resp.status(401).send();

@@ -1,7 +1,12 @@
 import {Router} from 'express';
 import {fetchAllProducts, saveProduct, fetchProductById, deleteProductById} from '../repository/mongodb-connect.js';
+import { verifyJwtToken } from '../middleware/jwt-verification.js';
 
 export const productsdbRouter = Router();
+
+
+//productsdbRouter.use(verifyJwtToken);
+
 
 //fetch all products
 productsdbRouter.get("/", async (req, resp) => {

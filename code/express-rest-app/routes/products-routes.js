@@ -1,8 +1,11 @@
 import { Router } from 'express';
 import { ProductRepository } from '../repository/product-repository.js';
+import { verifyJwtToken } from '../middleware/jwt-verification.js';
 
 export const productRouter = Router();
 const repository = new ProductRepository();
+
+productRouter.use(verifyJwtToken);
 
 // GET /products
 productRouter.get("/", (req, resp) => {

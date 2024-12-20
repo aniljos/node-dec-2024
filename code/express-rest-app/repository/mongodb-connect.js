@@ -1,7 +1,15 @@
 import {MongoClient} from 'mongodb';
 import { Product } from '../model/product.js';
+import {config} from 'dotenv';
 
-const mongodb_url = "mongodb://localhost:27017";
+const env = `.env.${process.env.NODE_ENV || 'development'}`;
+config({path: env});
+
+//const mongodb_url = "mongodb://localhost:27017";
+//const mongodb_url = process.env.MONGODB_URL || process.env.MONGO_URI;
+const mongodb_url = process.env.MONGO_URI;
+
+
 const databaseName = "productsdb";
 
 export async function  connect(){

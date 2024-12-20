@@ -15,6 +15,15 @@ app.use(express.json());
 // static files in the public folder
 app.use(express.static("public"));
 
+//logging
+app.use((req, resp, next) => {
+
+    
+    console.log(chalk.greenBright.inverse(`Handling request(${req.url}) on process(${process.pid})`));
+    next();
+
+})
+
 app.use("/products", productRouter);
 app.use("/productsdb", productsdbRouter);
 app.use("/auth", authRouter);
